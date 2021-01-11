@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>.copyleft {
+        display: inline-block;
+        transform: rotate(180deg);
+    }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => M.Collapsible.init(document.querySelectorAll('.collapsible'), {}));
+    </script>
+    <title>{{title}} - EscapeRoom</title>
+</head>
+<body>
+<nav>
+    <div class="indigo lighten-1 nav-wrapper">
+        <a href="#" class="brand-logo"><i class="material-icons">run_circle</i>{{title}} - EscapeRoom ({{current}} out of {{len}})</a>
+    </div>
+
+
+</nav>
+<div class="container">
+    <div class="row">
+        <ul class="collapsible">
+            <li>
+                <div class="collapsible-header"><i class="material-icons">contact_support</i>Instructions</div>
+                <div class="collapsible-body"><span>
+                    <p>
+                    <h5>Welcome to your first indoor escape room experience!</h5><br>
+                    It seems like someone really loves you!<br>
+                    <br>
+                    The rules of the game are pretty simple, use the clues to find the stashed QR code around your house,<br>
+                    Scan it, save aside the code you're getting from each clue.<br>
+                    <br>
+                    At the end you'll be able to decode that with all the clues you found so far with a dedicated private GPG key that has been generated just for you!<br>
+                    <br>
+                    <i>lt;dr: got a clue? Keep on searching and scanning, you'll decode your way out.</i>
+                </p></span></div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">vpn_key</i>Code</div>
+                <div class="collapsible-body"><span><code>{{code}}</code></span></div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">next_week</i>Next hint</div>
+                <div class="collapsible-body"><span>{{hint}}</span></div>
+            </li>
+            <li>
+                <div class="collapsible-header"><i class="material-icons">qr_code_2</i>This QR</div>
+                <div class="collapsible-body center"><span><img src="{{qr}}"></span></div>
+            </li>
+        </ul>
+    </div>
+</div>
+<footer class="indigo lighten-1 page-footer">
+    <div class="footer-copyright">
+        <div class="container">
+            <span class="copyleft">&copy;</span> 2021 - Gilad Maoz
+            <a class="grey-text text-lighten-4 right" href="https://www.evilurge.com/"><i
+                    class="material-icons">face</i></a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
