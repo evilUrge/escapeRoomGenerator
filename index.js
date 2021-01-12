@@ -84,8 +84,6 @@ inquirer.prompt([
         const qrCodes = [],
             finalObj = [];
         for (let i = 0; i < Object.keys(output.riddles).length - 1; i += 1) {
-            console.log(output.riddles[Object.keys(output.riddles)[i]])
-            console.log(embed[output.riddles[Object.keys(output.riddles)[i]].format])
             const id = Object.keys(output.riddles)[i]
             await qrCodes.push(qr(`${baseURL}${id}`).then(qrImg => {
                     generatePage(output.name, id, finalEncSplit[i],
