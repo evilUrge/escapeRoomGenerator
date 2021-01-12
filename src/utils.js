@@ -1,11 +1,12 @@
 const fs = require('fs'),
+    path = require('path'),
     baseDir = process.cwd(),
     crypto = require('crypto')
 
 module.exports = {
     generateId: (le = 8) => crypto.randomBytes(le).toString('hex'),
     generatePage: (title, id, gpg_code, hint, qr, current, len) =>
-        fs.writeFile(`${baseDir}/public/${id}/index.html`, fs.readFileSync(require('path').join(__dirname, 'template.html')).toString()
+        fs.writeFile(`${baseDir}/public/${id}/index.html`, fs.readFileSync(path.join(__dirname, 'template.html')).toString()
                 .replace('{{code}}', gpg_code)
                 .replace('{{hint}}', hint)
                 .replace('{{qr}}', qr)
@@ -16,6 +17,11 @@ module.exports = {
             (err) => err
                 ? console.error(`failed to write new html: ${err}`)
                 : process.exit()),
+    createPDF: arrayOfQR =>
+        require('mustache-async').render(fs.readFileSync(path.join(__dirname, 'manual_template.html'), 'utf8'),
+            {data: arrayOfQR}).then(manual =>
+            require('html-pdf').create(manual, {format: 'A4'})
+                .toFile(`${baseDir}/manual.pdf`, (err, res) => err ? console.log(err) : true)),
     qr: stringToQR => require('qrcode').toDataURL(stringToQR),
     generateGPG: () => {
         const keys = crypto.generateKeyPairSync('rsa', {
@@ -46,13 +52,14 @@ module.exports = {
     strSlicer: (str, num) => {
         const len = str.length / num;
         const creds = str.split("").reduce((acc, val) => {
-            let { res, currInd } = acc;
-            if(!res[currInd] || res[currInd].length < len){
+            let {res, currInd} = acc;
+            if (!res[currInd] || res[currInd].length < len) {
                 res[currInd] = (res[currInd] || "") + val;
-            }else{
+            } else {
                 res[++currInd] = val;
-            };
-            return { res, currInd };
+            }
+            ;
+            return {res, currInd};
         }, {
             res: [],
             currInd: 0

@@ -7,9 +7,9 @@ const chalk = require('chalk'),
         folderInit,
         generateGPG,
         encryptStringWithRsaPublicKey,
-        strSlicer,
-        qr,
-        generatePage
+        strSlicer, qr,
+        generatePage,
+        createPDF
     } = require("./src/utils"),
     {
         regexConst,
@@ -81,12 +81,13 @@ inquirer.prompt([
         const keys = generateGPG()
         const finalId = Object.keys(output.riddles).find(i => i.startsWith('fin_'))
         const finalEncSplit = strSlicer(encryptStringWithRsaPublicKey(output.riddles[finalId]), Object.keys(output.riddles).length - 1)
-        const qrCodes = []
+        const qrCodes = [],
+            finalObj = [];
         for (let i = 0; i < Object.keys(output.riddles).length - 1; i += 1) {
             console.log(output.riddles[Object.keys(output.riddles)[i]])
             console.log(embed[output.riddles[Object.keys(output.riddles)[i]].format])
             const id = Object.keys(output.riddles)[i]
-            qrCodes.push(qr(`${baseURL}${id}`).then(qrImg => {
+            await qrCodes.push(qr(`${baseURL}${id}`).then(qrImg => {
                     generatePage(output.name, id, finalEncSplit[i],
                         embed[output.riddles[id].format](output.riddles[id].value),
                         qrImg, i + 1, Object.keys(output.riddles).length - 1)
@@ -95,6 +96,9 @@ inquirer.prompt([
             ))
         }
         await Promise.all(qrCodes)
+        for (id in qrCodes)
+            finalObj.push({'id': id, 'qr': qrCodes[id]});
+        createPDF(finalObj)
         textConst.finale.forEach(msg => console.log(chalk.green.bold(msg)))
     })
 
