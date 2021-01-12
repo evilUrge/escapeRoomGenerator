@@ -1,6 +1,6 @@
 {
   "name": "esc-gnr",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Generate your own escape room",
   "main": "index.js",
   "bin": "./index.js",
