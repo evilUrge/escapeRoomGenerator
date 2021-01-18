@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <style>.copyleft {
+        display: inline-block;
+        transform: rotate(180deg);
+    }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => M.Collapsible.init(document.querySelectorAll('.collapsible'), {}));
+        const decodeData = () => {
+            const pkey = document.getElementById('pkey').value;
+            const clue = document.getElementById('clue').value;
+            if (pkey && clue) {
+                // const decipher = crypto.createDecipheriv(algorithm, secretKey, Buffer.from(hash.iv, 'hex'));
+                crypto.subtle.importKey("raw", {
+                    kty: 'RSA',
+                    e: b64tob64u(hexToBase64(rsaJson.e)),
+                    n: b64tob64u(hexToBase64(rsaJson.n)),
+                    alg: 'RSA-OAEP-256',
+                    ext: true
+                }, "RSA-OAEP", true, ["encrypt", "decrypt"])
+                    .then(key => crypto.subtle.decrypt({name: "RSA-OAEP"}, key, atob(clue))
+                        .then(plainBuffer => {
+                                document.getElementById('decoded').value = new TextDecoder().decode(plainBuffer)
+                                document.getElementById('clue_label').innerHTML = ""
+                                M.toast({html: 'Text has been decoded!', classes: 'rounded'})
+                            }
+                        )
+                        .catch(err =>
+                                console.error(err.message)
+                            // M.toast({html: err.message, classes: 'rounded'})
+                        ))
+                    .catch(err => console.error(err.message))
+
+            } else {
+                M.toast({html: 'Please enter correct values for the private key and clue!', classes: 'rounded'})
+            }
+
+        }
+    </script>
+    <title>{{title}} - EscapeRoom</title>
+</head>
+<body>
+<nav>
+    <div class="indigo lighten-1 nav-wrapper">
+        <a href="#" class="brand-logo"><i class="material-icons">run_circle</i>{{title}} - EscapeRoom Decoder</a>
+    </div>
+
+
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <div class="input-field col s5">
+                <i class="material-icons prefix">vpn_key</i>
+                <textarea id="pkey" class="materialize-textarea"></textarea>
+                <label for="pkey">Private key</label>
+            </div>
+            <div class="input-field col s5">
+                <i class="material-icons prefix">find_in_page</i>
+                <textarea id="clue" class="materialize-textarea"></textarea>
+                <label for="clue">Full riddle</label>
+            </div>
+            <div class="col s2">
+                <button class="btn-floating btn-large waves-effect waves-light indigo darken-4" name="action"
+                        onclick="decodeData()">
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="input-field col s12">
+            <i class="material-icons prefix">description</i>
+            <textarea disabled id="decoded" class="materialize-textarea"></textarea>
+            <label for="decoded" id="clue_label">Decoded text</label>
+        </div>
+    </div>
+</div>
+<footer class="indigo lighten-1 page-footer">
+    <div class="footer-copyright">
+        <div class="container">
+            <span class="copyleft">&copy;</span> 2021 - Gilad Maoz
+            <a class="grey-text text-lighten-4 right" href="https://www.evilurge.com/"><i
+                    class="material-icons">face</i></a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

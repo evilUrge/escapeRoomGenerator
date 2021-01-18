@@ -78,9 +78,11 @@ inquirer.prompt([
     .then(async output => {
         folderInit(Object.keys(output.riddles).filter(id => !id.startsWith('fin_')))
         const baseURL = output.baseURL.endsWith('/') ? output.baseURL : `${output.baseURL}/`
-        const keys = generateGPG()
+        const keysNames = {public: generateId(12), private: generateId(12)}
+        const keys = await generateGPG(keysNames.public, keysNames.private)
         const finalId = Object.keys(output.riddles).find(i => i.startsWith('fin_'))
-        const finalEncSplit = strSlicer(encryptStringWithRsaPublicKey(output.riddles[finalId]), Object.keys(output.riddles).length - 1)
+        const finalEncSplit = strSlicer(encryptStringWithRsaPublicKey(output.riddles[finalId], keysNames.public),
+            Object.keys(output.riddles).length - 1)
         const qrCodes = [],
             finalObj = [];
         for (let i = 0; i < Object.keys(output.riddles).length - 1; i += 1) {
