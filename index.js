@@ -9,6 +9,7 @@ const chalk = require('chalk'),
         encryptStringWithRsaPublicKey,
         strSlicer, qr,
         generatePage,
+        generateDecoder,
         createPDF
     } = require("./src/utils"),
     {
@@ -18,7 +19,7 @@ const chalk = require('chalk'),
     } = require("./src/constant")
 require('clear')()
 
-console.log(chalk.yellow(require('figlet').textSync(textConst.name)));
+console.log(chalk.yellow(require('figlet').textSync(textConst.name))),
 console.log(chalk.bgBlueBright.whiteBright.bold(textConst.welcome))
 
 inquirer.prompt([
@@ -76,24 +77,37 @@ inquirer.prompt([
         })
     })
     .then(async output => {
-        folderInit(Object.keys(output.riddles).filter(id => !id.startsWith('fin_')))
+        folderInit(Object.keys(output.riddles))
         const baseURL = output.baseURL.endsWith('/') ? output.baseURL : `${output.baseURL}/`
         const keysNames = {public: generateId(12), private: generateId(12)}
         const keys = await generateGPG(keysNames.public, keysNames.private)
         const finalId = Object.keys(output.riddles).find(i => i.startsWith('fin_'))
         const finalEncSplit = strSlicer(encryptStringWithRsaPublicKey(output.riddles[finalId], keysNames.public),
-            Object.keys(output.riddles).length - 1)
+            Object.keys(output.riddles).length)
         const qrCodes = [],
             finalObj = [];
-        for (let i = 0; i < Object.keys(output.riddles).length - 1; i += 1) {
+        for (let i = 0; i < Object.keys(output.riddles).length; i += 1) {
             const id = Object.keys(output.riddles)[i]
-            await qrCodes.push(qr(`${baseURL}${id}`).then(qrImg => {
-                    generatePage(output.name, id, finalEncSplit[i],
-                        embed[output.riddles[id].format](output.riddles[id].value),
-                        qrImg, i + 1, Object.keys(output.riddles).length - 1)
-                    return qrImg
-                }
-            ))
+            if (i === Object.keys(output.riddles).length-1){
+                const decoderId = generateId()
+                folderInit([decoderId])
+                generateDecoder(output.name,decoderId) //TODO: remove this init and make the id creation in the index header.
+                await qrCodes.push(qr(`${baseURL}${id}`).then(async qrImg => {
+                        await generatePage(output.name, id, finalEncSplit[i],
+                            qrImg, i + 1, Object.keys(output.riddles).length,
+                            false, {url:`${baseURL}keys/${keysNames.private}.key`,decoder:`${baseURL}${decoderId}`})
+                        return qrImg
+                    }
+                ))
+            } else{
+                await qrCodes.push(qr(`${baseURL}${id}`).then(async qrImg => {
+                        await generatePage(output.name, id, finalEncSplit[i],
+                            qrImg, i + 1, Object.keys(output.riddles).length,
+                            embed[output.riddles[id].format](output.riddles[id].value),)
+                        return qrImg
+                    }
+                ))
+            }
         }
         await Promise.all(qrCodes)
         for (id in qrCodes)

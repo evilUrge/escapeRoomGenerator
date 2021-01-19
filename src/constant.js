@@ -1,10 +1,18 @@
 module.exports = {
     conf: {
-        algorithm: {
-            name: 'RSA-OAEP',
-            modulusLength: 2048,
-            publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
-            hash: {name: 'SHA-256'},
+        gpg: {
+            type: 'rsa',
+            options: {
+                modulusLength: 2048,
+                publicKeyEncoding: {
+                    type: 'spki',
+                    format: 'pem'
+                },
+                privateKeyEncoding: {
+                    type: 'pkcs8',
+                    format: 'pem'
+                }
+            }
         }
     },
     regexConst: {
