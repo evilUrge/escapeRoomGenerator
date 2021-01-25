@@ -1,4 +1,4 @@
-<!DOCTYPE html>{{#data}}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,25 +12,35 @@
     </style>
     <script>
         document.addEventListener('DOMContentLoaded', () => M.Collapsible.init(document.querySelectorAll('.collapsible'), {}));
-        const decodeData = async () => {
-            const privateKey = document.getElementById('pkey').value;
-            const ciphertextB64 = document.getElementById('clue').value;
-            if (privateKey && ciphertextB64) {
-                fetch("https://europe-west3-shell-gems.cloudfunctions.net/decode", {
-                    method: "POST",
-                    body: JSON.stringify({pem: privateKey, message: ciphertextB64})
-                }).then(res =>
-                    res.status === 200 ?
-                        res.text().then(text => {
-                            document.getElementById('decoded').value = text
-                            document.getElementById('clue_label').innerHTML = ""
-                            M.toast({html: 'Text has been decoded!', classes: 'rounded'})
-                        })
-                        : M.toast({html: 'Error decoding your clue', classes: 'rounded'}))
-                    .catch(err => console.error(err));
+        const decodeData = () => {
+            const pkey = document.getElementById('pkey').value;
+            const clue = document.getElementById('clue').value;
+            if (pkey && clue) {
+                // const decipher = crypto.createDecipheriv(algorithm, secretKey, Buffer.from(hash.iv, 'hex'));
+                crypto.subtle.importKey("raw", {
+                    kty: 'RSA',
+                    e: b64tob64u(hexToBase64(rsaJson.e)),
+                    n: b64tob64u(hexToBase64(rsaJson.n)),
+                    alg: 'RSA-OAEP-256',
+                    ext: true
+                }, "RSA-OAEP", true, ["encrypt", "decrypt"])
+                    .then(key => crypto.subtle.decrypt({name: "RSA-OAEP"}, key, atob(clue))
+                        .then(plainBuffer => {
+                                document.getElementById('decoded').value = new TextDecoder().decode(plainBuffer)
+                                document.getElementById('clue_label').innerHTML = ""
+                                M.toast({html: 'Text has been decoded!', classes: 'rounded'})
+                            }
+                        )
+                        .catch(err =>
+                                console.error(err.message)
+                            // M.toast({html: err.message, classes: 'rounded'})
+                        ))
+                    .catch(err => console.error(err.message))
+
             } else {
                 M.toast({html: 'Please enter correct values for the private key and clue!', classes: 'rounded'})
             }
+
         }
     </script>
     <title>{{title}} - EscapeRoom</title>
@@ -40,6 +50,8 @@
     <div class="indigo lighten-1 nav-wrapper">
         <a href="#" class="brand-logo"><i class="material-icons">run_circle</i>{{title}} - EscapeRoom Decoder</a>
     </div>
+
+
 </nav>
 <div class="container">
     <div class="row">
@@ -80,4 +92,4 @@
     </div>
 </footer>
 </body>
-</html>{{/data}}
+</html>

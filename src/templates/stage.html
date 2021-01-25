@@ -1,4 +1,4 @@
-<!DOCTYPE html>{{#data}}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,8 +18,7 @@
 <body>
 <nav>
     <div class="indigo lighten-1 nav-wrapper">
-        <a href="#" class="brand-logo"><i class="material-icons">run_circle</i>{{title}} - EscapeRoom ({{current}} out
-            of {{len}})</a>
+        <a href="#" class="brand-logo"><i class="material-icons">run_circle</i>{{title}} - EscapeRoom ({{current}} out of {{len}})</a>
     </div>
 
 
@@ -40,41 +39,16 @@
                     At the end you'll be able to decode that with all the clues you found so far with a dedicated private GPG key that has been generated just for you!<br>
                     <br>
                     <i>lt;dr: got a clue? Keep on searching and scanning, you'll decode your way out.</i>
-                    </p></span></div>
+                </p></span></div>
             </li>
             <li>
                 <div class="collapsible-header"><i class="material-icons">vpn_key</i>Code</div>
                 <div class="collapsible-body"><span><code>{{code}}</code></span></div>
             </li>
-            {{#next}}
             <li>
                 <div class="collapsible-header"><i class="material-icons">next_week</i>Next hint</div>
-                <div class="collapsible-body"><span>{{{next}}}</span></div>
+                <div class="collapsible-body"><span>{{hint}}</span></div>
             </li>
-            {{/next}}
-            {{#final}}
-            <li>
-                <div class="collapsible-header"><i class="material-icons">emoji_events</i>You got it - Time to decode!
-                </div>
-                <div class="collapsible-body">
-                    <span>
-                      <div class="row">
-
-                          <div class="card indigo darken-4 darken-1">
-                            <div class="card-content white-text">
-                              <p>You made it! finally to the last stage of this entire digital indoor maze!
-                              But that's not the end just yet, it's time to add together all the codes you got (in chronological order).</p>
-                            </div>
-                            <div class="card-action">
-                              <a href="{{url}}" download=""><i class="material-icons left">vpn_key</i>Download Key</a>
-                                <a href="{{decoder}}">Go to the decrypter</a>
-                            </div>
-                          </div>
-                      </div>
-                </span>
-                </div>
-            </li>
-            {{/final}}
             <li>
                 <div class="collapsible-header"><i class="material-icons">qr_code_2</i>This QR</div>
                 <div class="collapsible-body center"><span><img src="{{qr}}"></span></div>
@@ -92,4 +66,4 @@
     </div>
 </footer>
 </body>
-</html>{{/data}}
+</html>
