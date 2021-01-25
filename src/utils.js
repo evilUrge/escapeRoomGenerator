@@ -5,6 +5,9 @@ const fs = require('fs'),
     mustache = require('mustache-async'),
     {conf} = require('./constant')
 
+const demo = {name: 'yaniv'}
+Object.assign(demo, {gamer:true})
+
 module.exports = {
     generateId: (le = 8) => crypto.randomBytes(le).toString('hex'),
     generatePage: (title, id, gpg_code, qr, current, len, next = false, final = false) =>
