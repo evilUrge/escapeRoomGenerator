@@ -16,7 +16,7 @@ Send your beloved partner\roomate\dog\bff to a COVID-19 style adventure around t
 
 > The rules of the game are pretty simple, use the clues to find the stashed QR code around your house,
 Scan it, save aside the code you're getting from each clue.
-> 
+>
 At the end you'll be able to decode that with all the clues you found so far with a dedicated private GPG key that has been generated just for you!
 
 ### Example
@@ -25,7 +25,7 @@ https://storage.googleapis.com/shell-gems.appspot.com/img/index.html
 
 ### How to install
 ```bash
-npm i esc-gnr
+npm i -g esc-gnr
 ```
 
 ### How to use
