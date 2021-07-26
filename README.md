@@ -14,9 +14,17 @@ The first indoor escape room generator!
 
 Send your beloved partner\roomate\dog\bff to a COVID-19 style adventure around the house!
 
-> The rules of the game are pretty simple, use the clues to find the stashed QR code around your house,
+<sup>[It all started with a friend's idea](https://www.linkedin.com/posts/konradgreilich_opensource-escaperooms-encryption-activity-6759800549572395009-zVNl
+)
+<3</sup>
+
+---
+
+
+
+The rules of the game are pretty simple, use the clues to find the stashed QR code around your house,
 Scan it, save aside the code you're getting from each clue.
->
+
 At the end you'll be able to decode that with all the clues you found so far with a dedicated private GPG key that has been generated just for you!
 
 ### Example
