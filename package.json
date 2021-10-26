@@ -5,7 +5,8 @@
   "main": "index.js",
   "bin": "./index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -26,11 +27,11 @@
   },
   "homepage": "https://github.com/evilUrge/escapeRoomGenerator#readme",
   "dependencies": {
-    "chalk": "^4.1.0",
+    "chalk": "^4.1.2",
     "clear": "^0.1.0",
-    "figlet": "^1.5.0",
-    "html-pdf": "^2.2.0",
-    "inquirer": "^7.3.3",
+    "figlet": "^1.5.2",
+    "html-pdf": "^3.0.1",
+    "inquirer": "^8.2.0",
     "mustache-async": "^0.1.3",
     "qrcode": "^1.4.4"
   },

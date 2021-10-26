@@ -1,4 +1,7 @@
 /keys
 /public
-node_modules
+/node_modules
+/.idea
+/.history
+/**/.DS_Store
 manual.pdf
